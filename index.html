@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>ANONYMOUS // SURVIVAL</title>
+<link rel="stylesheet" href="style.css" />
+<script>
+  (function(){
+    try{
+      if(window.innerHeight > window.innerWidth){
+        document.documentElement.classList.add('is-portrait');
+      }
+    }catch(e){}
+  })();
+</script>
+</head>
+<body>
+
+  <!-- ================= PORTRAIT LOCK OVERLAY ================= -->
+  <div id="portrait-overlay" class="portrait-overlay" aria-hidden="true">
+    <div class="portrait-overlay__icon">
+      <svg viewBox="0 0 64 64" width="52" height="52" fill="none" stroke="currentColor" stroke-width="2.5">
+        <rect x="20" y="6" width="24" height="42" rx="2"></rect>
+        <line x1="20" y1="38" x2="44" y2="38"></line>
+        <path d="M48 52 A16 16 0 1 1 46 40" stroke-dasharray="3 3"></path>
+        <path d="M46 34 L46 40 L52 40" fill="none"></path>
+      </svg>
+    </div>
+    <p class="portrait-overlay__title">ROTATE YOUR DEVICE</p>
+    <p class="portrait-overlay__sub">ANONYMOUS IS DESIGNED FOR LANDSCAPE MODE</p>
+  </div>
+
+  <!-- ================= APP ROOT ================= -->
+  <div id="app" class="app">
+
+    <div class="bg" aria-hidden="true">
+      <div class="bg__grid"></div>
+      <div class="bg__scan"></div>
+    </div>
+
+    <!-- ============ SCREEN: MAIN MENU ============ -->
+    <section id="screen-main" class="screen screen--main is-active" data-screen="main">
+      <header class="brand">
+        <h1 class="brand__title">ANONYMOUS</h1>
+        <p class="brand__subtitle">SURVIVAL</p>
+      </header>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-btn nav-btn--primary" data-action="go-play">
+          <span class="nav-btn__icon" data-icon="play"></span>
+          <span class="nav-btn__label">PLAY</span>
+        </button>
+        <button class="nav-btn" data-action="open-create-player">
+          <span class="nav-btn__icon" data-icon="profile"></span>
+          <span class="nav-btn__label" id="player-nav-label">SET CALLSIGN</span>
+        </button>
+        <button class="nav-btn" data-action="go-settings">
+          <span class="nav-btn__icon" data-icon="settings"></span>
+          <span class="nav-btn__label">SETTINGS</span>
+        </button>
+        <button class="nav-btn" data-action="exit-game">
+          <span class="nav-btn__icon" data-icon="lock"></span>
+          <span class="nav-btn__label">EXIT</span>
+        </button>
+      </nav>
+
+      <div class="player-strip">
+        <div class="player-strip__avatar" data-icon="profile"></div>
+        <div class="player-strip__info">
+          <p class="player-strip__name" id="strip-username">NO CALLSIGN</p>
+          <p class="player-strip__meta">SURVIVE 120 SECONDS</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN: SETTINGS ============ -->
+    <section id="screen-settings" class="screen screen--settings" data-screen="settings">
+      <div class="screen-head">
+        <button class="btn-back" data-action="back-to-main" aria-label="Back">
+          <span data-icon="back"></span> BACK
+        </button>
+        <h2 class="screen-title">SETTINGS</h2>
+      </div>
+
+      <div class="settings-content">
+        <div class="control-row">
+          <label class="control-row__label" for="master-volume">MASTER VOLUME</label>
+          <div class="slider-wrap">
+            <input type="range" id="master-volume" min="0" max="100" value="70" class="slider" />
+            <span class="slider-value" id="master-volume-value">70%</span>
+          </div>
+        </div>
+        <div class="control-row">
+          <span class="control-row__label">MUSIC / AMBIENCE</span>
+          <button class="toggle" id="toggle-music" data-state="on" aria-pressed="true">
+            <span class="toggle__track"><span class="toggle__thumb"></span></span>
+            <span class="toggle__text">ON</span>
+          </button>
+        </div>
+        <div class="control-row">
+          <span class="control-row__label">SOUND EFFECTS</span>
+          <button class="toggle" id="toggle-sfx" data-state="on" aria-pressed="true">
+            <span class="toggle__track"><span class="toggle__thumb"></span></span>
+            <span class="toggle__text">ON</span>
+          </button>
+        </div>
+        <div class="control-row">
+          <label class="control-row__label" for="sensitivity">CAMERA SENSITIVITY</label>
+          <div class="slider-wrap">
+            <input type="range" id="sensitivity" min="20" max="100" value="55" class="slider" />
+            <span class="slider-value" id="sensitivity-value">55%</span>
+          </div>
+        </div>
+        <div class="control-row">
+          <span class="control-row__label">SHADOWS</span>
+          <button class="toggle" id="toggle-shadows" data-state="on" aria-pressed="true">
+            <span class="toggle__track"><span class="toggle__thumb"></span></span>
+            <span class="toggle__text">ON</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN: GAMEPLAY ============ -->
+    <section id="screen-gameplay" class="screen screen--gameplay" data-screen="gameplay">
+      <div id="game-canvas-wrap" class="game-canvas-wrap">
+        <canvas id="game-canvas"></canvas>
+      </div>
+
+      <div class="hud" aria-hidden="false">
+        <div class="hud__top">
+          <button class="btn-outline btn-small hud__exit" data-action="exit-gameplay">EXIT</button>
+          <div class="hud__timer">
+            <span class="hud__timer-label">TIME LEFT</span>
+            <span class="hud__timer-value" id="hud-timer">02:00</span>
+          </div>
+        </div>
+
+        <div class="hud__look-zone" id="hud-look-zone" aria-hidden="true"></div>
+
+        <div class="hud__controls">
+          <div class="joystick" id="joystick">
+            <div class="joystick__base">
+              <div class="joystick__thumb" id="joystick-thumb"></div>
+            </div>
+          </div>
+
+          <button class="jump-btn" id="jump-btn" aria-label="Jump">
+            <span data-icon="jump"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SCREEN: NEW LOBBY / ZONE SEALED ============ -->
+    <section id="screen-lobby" class="screen screen--lobby" data-screen="lobby">
+      <div class="lobby-panel">
+        <p class="lobby-panel__eyebrow">ZONE SEALED</p>
+        <h2 class="lobby-panel__title">NEW LOBBY</h2>
+        <p class="lobby-panel__sub">The perimeter has closed. A new sector is being prepared.</p>
+        <button class="btn-solid btn-large" data-action="back-to-main">RETURN TO MENU</button>
+      </div>
+    </section>
+
+    <!-- ============ MODAL: CREATE / EDIT PLAYER ============ -->
+    <div class="modal-overlay" id="modal-overlay" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <h2 class="modal__title" id="modal-title">SET CALLSIGN</h2>
+        <label class="modal__label" for="username-input">CALLSIGN</label>
+        <input
+          type="text"
+          id="username-input"
+          class="modal__input"
+          placeholder="ENTER USERNAME"
+          maxlength="16"
+          autocomplete="off"
+        />
+        <p class="modal__error" id="modal-error"></p>
+        <div class="modal__actions">
+          <button class="btn-solid" id="modal-create" data-action="submit-player">SAVE</button>
+          <button class="btn-outline" id="modal-cancel" data-action="close-modal">CANCEL</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="app.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
